@@ -58,12 +58,14 @@
                         {% if product.size.all %}
                             <strong class="text-dark mr-3">Sizes:</strong>
                         {% endif %}
-                        <form>
+                        <form  action="{% url "cart:cart_add" product.id %}" method="post">
+                            {% csrf_token %}
                             {% for size in product.size.all %}
                                 <div class="custom-control custom-radio custom-control-inline">
                                     <input
                                             type="radio"
                                             class="custom-control-input"
+                                            value="{{ size.title }}"
                                             id="{{ size.title }}"
                                             name="size"
                                     />
@@ -71,31 +73,32 @@
                                     >{{ size.title }}</label>
                                 </div>
                             {% endfor %}
-                        </form>
+
                     </div>
                     <div class="d-flex mb-4">
                         {% if product.color.all %}
                             <strong class="text-dark mr-3">Colors:</strong>
                         {% endif %}
-                        <form>
+
                             {% for color in product.color.all %}
                                 <div class="custom-control custom-radio custom-control-inline">
                                     <input
                                             type="radio"
                                             class="custom-control-input"
                                             id="{{ color.title }}"
+                                            value="{{ color.title }}"
                                             name="color"
                                     />
                                     <label class="custom-control-label" for="{{ color.title }}"
                                     >{{ color.title }}</label>
                                 </div>
                             {% endfor %}
-                        </form>
+
                     </div>
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-minus">
+                                <button type="button" class="btn btn-primary btn-minus">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -103,9 +106,10 @@
                                     type="text"
                                     class="form-control bg-secondary border-0 text-center"
                                     value="1"
+                                    name="quantity"
                             />
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-plus">
+                                <button type="button" class="btn btn-primary btn-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -113,6 +117,7 @@
                         <button class="btn btn-primary px-3">
                             <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
                         </button>
+                        </form>
                     </div>
                 </div>
             </div>
