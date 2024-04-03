@@ -123,6 +123,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = '/account/login'
+
+MERCHANT = "00000000-0000-0000-0000-000000000000"
+
+SANDBOX = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

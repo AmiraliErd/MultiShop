@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from account.models import User, Otp
+from account.models import User, Otp, Address
 
 
 class UserCreationForm(forms.ModelForm):
@@ -82,6 +82,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 # Now register the new UserAdmin...
+admin.site.register(Address)
 admin.site.register(User, UserAdmin)
 admin.site.register(Otp)
 # ... and, since we're not using Django's built-in permissions,

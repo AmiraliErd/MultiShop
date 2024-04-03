@@ -1,11 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, reverse
 from django.views import View
 import ghasedakpack
 from random import randint
-from .forms import LoginForm, OtpLoginForm, CheckOtpForm
+from .forms import LoginForm, OtpLoginForm, CheckOtpForm, AddressCreationForm
 from .models import Otp, User
-#from django.utils.crypto import get_random_string
+# from django.utils.crypto import get_random_string
 from uuid import uuid4
 
 SMS = ghasedakpack.Ghasedak("480bd6910083678001fe43ac851d65bf818538945df6cfccba3c55ec6671af32")
@@ -23,6 +24,9 @@ class UserLogin(View):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
+                next_page = request.GET.get('next')
+                if next_page:
+                    return redirect(next_page)
                 return redirect("/")
             else:
                 form.add_error("username", "Invalid user data")
@@ -67,6 +71,9 @@ class CheckOtpView(View):
                 otp = Otp.objects.get(token=token)
                 user, is_create = User.objects.get_or_create(phone=otp.phone)
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                next_page = request.GET.get('next')
+                if next_page:
+                    return redirect(next_page)
                 otp.delete()
                 return redirect('/')
             else:
@@ -76,6 +83,24 @@ class CheckOtpView(View):
             form.add_error('code', 'Invalid code')
 
         return render(request, 'account/check_otp.html', {'form': form})
+
+
+class AddAddressView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = AddressCreationForm()
+        return render(request, 'account/add_address.html', {'form': form})
+
+    def post(self, request):
+        form = AddressCreationForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            next_page = request.GET.get('next')
+            if next_page:
+                return redirect(next_page)
+
+        return render(request, 'account/add_address.html', {'form': form})
 
 
 def user_logout(request):

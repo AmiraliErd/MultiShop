@@ -24,6 +24,10 @@ class Product(models.Model):
     size = models.ManyToManyField(Size, blank=True, related_name='products')
     color = models.ManyToManyField(Color, blank=True, related_name='products')
 
+    class Meta:
+        verbose_name = 'محصول'
+        verbose_name_plural = 'محصولات'
+
     def __str__(self):
         return self.title
 

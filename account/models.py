@@ -73,6 +73,26 @@ class Otp(models.Model):
     code = models.SmallIntegerField()
     expiration_date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'کد تایید'
+        verbose_name_plural = 'کد های تایید'
+
     def __str__(self):
         return self.phone
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
+    fullname = models.CharField(max_length=30)
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=12)
+    address = models.CharField(max_length=300)
+    postal_code = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name = 'آدرس'
+        verbose_name_plural = 'آدرس ها'
+
+    def __str__(self):
+        return self.user.phone
 

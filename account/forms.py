@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Address
 from django.core.exceptions import ValidationError
 from django.core import validators
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -21,6 +21,19 @@ class LoginForm(forms.Form):
             raise ValidationError('تلفن وارد شده معتبر نیست', code='invalid_phone')
 
         return username
+
+
+class AddressCreationForm(forms.ModelForm):
+    user = forms.IntegerField(required=False)
+    fullname = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Amirali Amiri'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'example@email.com'}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '09123456789'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '123 street'}))
+    postal_code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '123'}))
+
+    class Meta:
+        model = Address
+        fields = '__all__'
 
 
 class OtpLoginForm(forms.Form):
