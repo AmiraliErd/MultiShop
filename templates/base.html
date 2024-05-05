@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load render_partial %}
 {% load static %}
 
 <head>
@@ -86,9 +87,9 @@
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
-            <form action="">
+            <form method="GET" action="{% url "product:search" %}">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" name="q" class="form-control" placeholder="Search for products">
                     <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -153,12 +154,13 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="{% url "home:home" %}" {% if request.resolver_match.url_name == 'home' %} class="nav-item nav-link active" {% endif %}class="nav-item nav-link">Home</a>
+                        <a href="{% url "product:products_list" %}" {% if request.resolver_match.url_name == 'products_list' %} class="nav-item nav-link active" {% endif %}class="nav-item nav-link">Products</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
                                     class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                 <a href="{% url "cart:cart_detail" %}" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                <a href="" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
